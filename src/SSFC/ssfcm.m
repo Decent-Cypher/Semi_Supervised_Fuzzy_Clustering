@@ -5,7 +5,7 @@
   % m: Fuzziness parameter
   % max_iter: Maximum number of iterations
   % tol: Tolerance for convergence
-
+addpath('private');
 function [cluster_centers, U, obj_func_history] = ssfcm(X, k, U_pre, options = [2.0, 100, 1e-5, 1])
 
   ## If ssfcm was called with an incorrect number of arguments or
@@ -57,8 +57,21 @@ function [V, U, obj_func_history] = ssfcm_private(X, k, U_pre, m, max_iterations
   while (convergence_criterion > epsilon && ++iteration <= max_iterations)
     V_previous = V;
     U = update_cluster_membership_ssfcm(V, X, m, k, n, sqr_dist, U_pre);
-    V = update_cluster_membership_ssfcm(U, X, k, U_pre);
+
+    delta_U_m = (abs(U - U_pre)).^m;
+    V = update_cluster_membership_ssfcm(delta_U_m, X, k, U_pre);
+    sqr_dist = square_distance_matrix(X, V);
+    obj_func_history(iteration) = compute_cluster_obj_fcn_ssfcm(delta_U_m, sqr_dist);
+    if (display_intermediate_results)
+      printf("Iteration count = %d, Objective fcn = %8.6f\n", iteration, obj_func_history(iteration));
+    endif
+    convergence_criterion = compute_cluster_convergence(V, V_previous);
   endwhile
+
+  ## Remove extraneous entries from the tail of the objective function history
+  if (convergence_criterion <= epsilon)
+    obj_func_history = obj_func_history(1:iteration);
+  endif
 endfunction
 
 

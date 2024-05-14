@@ -1,5 +1,4 @@
-function V = update_cluster_prototypes (U, X, k, U_pre)
-  delta_U_m = (abs(U - U_pre)).^m;
+function V = update_cluster_prototypes (delta_U_m, X, k)
   V = delta_U_m * X;
   sum_delta_U_m = sum (delta_U_m');
   if (prod (sum_delta_U_m) == 0)
