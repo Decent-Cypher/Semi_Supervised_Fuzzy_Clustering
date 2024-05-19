@@ -20,18 +20,19 @@ To run the algorithms on the Iris Flower dataset, follow these steps:
 
 1. Clone the repository:
 
-git clone https://github.com/Decent-Cypher/Semi_Supervised_Fuzzy_Clustering.git
+`git clone https://github.com/Decent-Cypher/Semi_Supervised_Fuzzy_Clustering.git`
 
 
 2. Navigate to the source code directory:
 
-cd Semi_Supervised_Fuzzy_Clustering/src
+`cd Semi_Supervised_Fuzzy_Clustering/src`
 
 
 3. Execute the test script:
 
-octave
-test
+`octave`
+
+`test`
 
 
 ## Dataset
