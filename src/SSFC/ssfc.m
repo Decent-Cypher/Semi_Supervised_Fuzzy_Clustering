@@ -5,8 +5,9 @@
   % lambda: The balance factor between the supervised and unsupervised parts in the loss function
   % max_iter: Maximum number of iterations
   % tol: Tolerance for convergence
-addpath('private');
+
 function [cluster_centers, U, obj_func_history] = ssfc(X, k, U_pre, options = [2.0, 100, 1e-5, 1])
+  addpath('SSFC/private');
 
   ## If ssfc was called with an incorrect number of arguments or
   ## if the arguments do not have the correct type, print an error
@@ -18,7 +19,8 @@ function [cluster_centers, U, obj_func_history] = ssfc(X, k, U_pre, options = [2
     error ("ssfc's first argument must be matrix of real numbers\n");
   elseif (!(is_int (k) && (k > 1)))
     error ("ssfc's second argument must be an integer greater than 1\n");
-  elseif (!(is_real_matrix(U_pre) && all(sum(matrix) <= 1) && size(U_pre, 1) == k))
+  elseif (!(is_real_matrix(U_pre) && all(sum(U_pre) <= 1.00001) && size(U_pre, 1) == k))
+    disp(U_pre);
     error ("ssfc's third argument must be a matrix of real numbers where the sum of each column is <= 1 and the number of rows is k (the number of clusters\n");
   elseif (!(isreal (options) && isvector (options)))
     error ("ssfc's fourth argument must be a vector of real numbers\n");
@@ -57,8 +59,8 @@ function [V, U, obj_func_history] = ssfc_private(X, k, U_pre, lambda, max_iterat
   while (convergence_criterion > epsilon && ++iteration <= max_iterations)
     V_previous = V;
     U = update_cluster_membership_ssfc(V, X, lambda, k, n, sqr_dist, U_pre);
-    delta_U_2 = (U - U_pre) .^ 2
-    V = update_cluster_prototypes_ssfc(delta_U_2, X, k, U);
+    delta_U_2 = (U - U_pre) .^ 2;
+    V = update_cluster_prototypes_ssfc(delta_U_2, X, k, U, lambda);
     sqr_dist = square_distance_matrix(X, V);
     obj_func_history(iteration) = compute_cluster_obj_fcn_ssfc(delta_U_2, sqr_dist, U, lambda);
     if (display_intermediate_results)

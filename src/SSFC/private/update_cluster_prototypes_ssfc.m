@@ -1,4 +1,4 @@
-function V = update_cluster_prototypes (delta_U_2, X, k, U)
+function V = update_cluster_prototypes_ssfc (delta_U_2, X, k, U, lambda)
 U_temp = U .* U + lambda*delta_U_2;
   V = U_temp * X;
   sum_delta_check = sum (U_temp');
