@@ -22,7 +22,7 @@ function [V, U, obj_func_history] = modified_fcm(X, k, m, label, max_iterations,
 
   # Initialize the prototypes and the calculation.
 
-  V = init_cluster_prototypes(X, k);
+  V = init_cluster_prototypes_modified_fcm(X, k, label);
   obj_func_history = zeros(max_iterations);
   convergence_criterion = epsilon + 1;
   iteration = 0;
@@ -37,6 +37,7 @@ function [V, U, obj_func_history] = modified_fcm(X, k, m, label, max_iterations,
   while (convergence_criterion > epsilon && ++iteration <= max_iterations)
     V_previous = V;
     U = update_cluster_membership_modified_fcm(V, X, m, k, n, sqr_dist);
+    U = defuzzificate(U, label, n);
     U_m = U .^ m;
     V = update_cluster_prototypes_modified_fcm(U_m, X, k, weights);
     sqr_dist = square_distance_matrix(X, V);

@@ -11,11 +11,11 @@ addpath('./TS3FCM/modified_FCM');
 # disp([X, label]);
 # dlmwrite('iris_semi_supervised.data', [X, label]);
 
-labeled_indices = label != -1;
 
 data = dlmread('iris_semi_supervised.data');
 X = data(:, 1:4);
 label = data(:, 5);
+labeled_indices = label != -1;
 disp("The entries used as labeled data are: ");
 disp(data(labeled_indices, :));
 
@@ -29,5 +29,4 @@ disp(neighbors(labeled_indices, :));
 ## [V, U, obj_func_history] = modified_fcm(X, 3, 2, label, 100, 1e-5, 1);
 
 [V, U, obj_func_history] = ts3fcm(X, 3, label, [2.0, 100, 1e-5, 0, 2.0]);
-disp(V);
-disp(U);
+disp(sum(U));
