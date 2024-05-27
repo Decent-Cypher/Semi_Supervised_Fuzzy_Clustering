@@ -15,11 +15,10 @@ function U = update_cluster_membership_modified_fcm(V, X, m, k, n, sqr_dist)
         endif
       endfor
     endfor
-
   else
     num_zeros = 0;
     for i = 1 : k
-      for j = 1 : nargin
+      for j = 1 : n
         if (sqr_dist(i, j) == 0)
           num_zeros++;
           U(i, j) = 1.0;
@@ -28,3 +27,4 @@ function U = update_cluster_membership_modified_fcm(V, X, m, k, n, sqr_dist)
     endfor
     U = U / num_zeros;
   endif
+endfunction

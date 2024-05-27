@@ -3,7 +3,7 @@ function V = init_cluster_prototypes_modified_fcm (X, k, label)
     V = rand(k, num_features);
     for i = 1:k
         X_generator = X(label==i, :);
-        if (size(X_generator, 1) == 0)
+        if (size(X_generator, 1) <= 2)
             X_generator = X;
         endif
         coefficients = rand(1, size(X_generator, 1));

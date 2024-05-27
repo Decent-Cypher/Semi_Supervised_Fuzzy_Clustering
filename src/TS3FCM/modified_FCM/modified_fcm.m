@@ -19,6 +19,9 @@ function [V, U, obj_func_history] = modified_fcm(X, k, m, label, max_iterations,
   label = label(labeled_index);
   neighbors_data = neighbors_data(labeled_index, :);
   weights = (neighbors_data(:, 1) + neighbors_data(:, 2))./(neighbors_data(:, 3)+1);
+  if (all(weights == 0))
+    error("The radius specified is too small to get weights from neighbors data!");
+  endif
 
   # Initialize the prototypes and the calculation.
 
